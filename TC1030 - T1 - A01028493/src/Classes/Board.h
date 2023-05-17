@@ -11,12 +11,12 @@ using namespace std;
 
 class Board {
   private:
-   char tiles[BOARD_SIZE];
+   string tiles[BOARD_SIZE];
 
   public:
    Board() {
       // generate random tiles
-      fill_n(tiles, BOARD_SIZE, 'N');
+      fill_n(tiles, BOARD_SIZE, "N");
 
       // random seed
       srand(static_cast<unsigned int>(time(nullptr)));
@@ -25,18 +25,22 @@ class Board {
       int snakes = 0;
       while (snakes < 3) {
          int selectedTile = rand() % BOARD_SIZE;
-         if (tiles[selectedTile] == 'N') {
+         if (tiles[selectedTile] == "N" &&
+             tiles[max(0, selectedTile - 3)] != "L" &&
+             selectedTile < (BOARD_SIZE - 1) && selectedTile > 2) {
             snakes += 1;
-            tiles[selectedTile] = 'S';
+            tiles[selectedTile] = "S";
          }
       }
       // generate ladders
       int ladders = 0;
       while (ladders < 3) {
          int selectedTile = rand() % BOARD_SIZE;
-         if (tiles[selectedTile] == 'N') {
+         if (tiles[selectedTile] == "N" &&
+             tiles[max(0, selectedTile + 3)] != "S" &&
+             selectedTile < (BOARD_SIZE - 3) && selectedTile > 0) {
             ladders += 1;
-            tiles[selectedTile] = 'L';
+            tiles[selectedTile] = "L";
          }
       }
    };
@@ -45,7 +49,10 @@ class Board {
       const int COLUMNS = 6;
       const int ROWS = 5;
 
-      cout << tiles << endl;
+      for (int i = 0; i < BOARD_SIZE; i++) {
+         cout << tiles[i];
+      }
+      cout << endl;
 
       for (int row = 0; row < ROWS; row++) {
 
@@ -61,15 +68,38 @@ class Board {
          }
          cout << endl;
          for (int col = 0; col < COLUMNS; col++) {
-            cout << "|   " << tiles[(BOARD_SIZE - 1) - (row * COLUMNS + col)]
+            cout << "|   " << tiles[(BOARD_SIZE - 1) - (row * COLUMNS + col)][0]
                  << "   |";
+         }
+         cout << endl;
+         for (int col = 0; col < COLUMNS; col++) {
+            int tile = (BOARD_SIZE) - (row * COLUMNS + col) - 1;
+
+            if (tiles[tile].length() == 1) {
+               cout << "|       |";
+            } else {
+
+               string players = "|";
+
+               for (int i = 1; i <= tiles[tile].length(); i++) {
+                  players +=
+                      tiles[tile][i] +
+                      (i < tiles[tile].length() - 1 ? string(" ") : string(""));
+               }
+
+               for (int i = 0; i < 8 - ((tiles[tile].length() - 1) * 2); i++) {
+                  players += " ";
+               }
+
+               cout << players << "|";
+            };
          }
          cout << endl;
          for (int col = 0; col < COLUMNS; col++) {
 
             tiles[row * COLUMNS + col];
 
-            cout << "|_______|";
+            cout << "|_______|";  // 7 under
          }
          cout << endl;
       }
