@@ -55,14 +55,12 @@ class Board {
          cout << endl;
 
          for (int col = 0; col < COLUMNS; col++) {
-            int tile = (BOARD_SIZE) - (row * COLUMNS + col);
-
-            cout << "|  [" << tile << (tile < 10 ? "] " : "]") << " |";
+            cout << "|  [" << row * COLUMNS + col
+                 << (row * COLUMNS + col < 10 ? "] " : "]") << " |";
          }
          cout << endl;
          for (int col = 0; col < COLUMNS; col++) {
-            cout << "|   " << tiles[(BOARD_SIZE - 1) - (row * COLUMNS + col)]
-                 << "   |";
+            cout << "|   " << tiles[row * COLUMNS + col] << "   |";
          }
          cout << endl;
          for (int col = 0; col < COLUMNS; col++) {

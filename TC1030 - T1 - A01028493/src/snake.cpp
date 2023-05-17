@@ -1,11 +1,12 @@
 #include "Classes/Board.h"
 
 class MyGame {
-  private:
-   Board GameBoard;
 
   public:
-   void start() { GameBoard = new Board }
+   void start() {
+      Board MyBoard;
+      MyBoard.print();
+   }
 };
 
 int main() {
