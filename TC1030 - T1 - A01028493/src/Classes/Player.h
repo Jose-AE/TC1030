@@ -5,7 +5,7 @@ class Player {
    int currentTile = 0;
 
   public:
-   Player(int id = 0) { id = 1; }
+   Player(int id = 0) { this->id = id; }
 
    void moveTiles(int tiles) { currentTile += tiles; }
 };

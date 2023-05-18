@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <iostream>
 #include <random>
+#include <string>
 
 #define BOARD_SIZE 30
 
@@ -12,6 +13,8 @@ using namespace std;
 class Board {
   private:
    string tiles[BOARD_SIZE];
+   int p1 = 0;
+   int p2 = 0;
 
   public:
    Board() {
@@ -43,18 +46,51 @@ class Board {
             tiles[selectedTile] = "L";
          }
       }
+      // tiles[4] = "L";
    };
 
-   void setTile(int tile, string value) { tiles[tile] = value; }
+   int movePlayerBy(int tile, int playerId) {
+
+      if (playerId == 0) {
+         if (p1 + tile > BOARD_SIZE - 1) {
+            p1 = BOARD_SIZE - 1;
+         } else if (tiles[p1 + tile] == "S") {
+            p1 += tile - 3;
+         } else if (tiles[p1 + tile] == "L") {
+            p1 += tile + 3;
+         } else {
+            p1 += tile;
+         }
+         return p1;
+      }
+
+      if (playerId == 1) {
+         if (p2 + tile > BOARD_SIZE - 1) {
+            p2 = BOARD_SIZE - 1;
+            cout << "-------------------------";
+         } else if (tiles[p2 + tile] == "S") {
+            p2 += tile - 3;
+         } else if (tiles[p2 + tile] == "L") {
+            p2 += tile + 3;
+         } else {
+            p2 += tile;
+         }
+         return p2;
+      }
+
+      return 0;
+   }
 
    void print() {
       const int COLUMNS = 6;
       const int ROWS = 5;
 
-      for (int i = 0; i < BOARD_SIZE; i++) {
-         cout << tiles[i];
+      if (false) {
+         for (int i = 0; i < BOARD_SIZE; i++) {
+            cout << tiles[i];
+         }
+         cout << endl;
       }
-      cout << endl;
 
       for (int row = 0; row < ROWS; row++) {
 
@@ -77,24 +113,19 @@ class Board {
          for (int col = 0; col < COLUMNS; col++) {
             int tile = (BOARD_SIZE) - (row * COLUMNS + col) - 1;
 
-            if (tiles[tile].length() == 1) {
-               cout << "|       |";
+            string players = "|";
+
+            if (tile == p1 && tile == p2) {
+               players += "(P1 P2)";
+            } else if (tile == p1) {
+               players += "  (P1) ";
+            } else if (tile == p2) {
+               players += "  (P2) ";
             } else {
+               players += "       ";
+            }
 
-               string players = "|";
-
-               for (int i = 1; i <= tiles[tile].length(); i++) {
-                  players +=
-                      tiles[tile][i] +
-                      (i < tiles[tile].length() - 1 ? string(" ") : string(""));
-               }
-
-               for (int i = 0; i < 8 - ((tiles[tile].length() - 1) * 2); i++) {
-                  players += " ";
-               }
-
-               cout << players << "|";
-            };
+            cout << players << "|";
          }
          cout << endl;
          for (int col = 0; col < COLUMNS; col++) {
