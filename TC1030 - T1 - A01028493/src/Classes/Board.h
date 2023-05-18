@@ -45,6 +45,8 @@ class Board {
       }
    };
 
+   void setTile(int tile, string value) { tiles[tile] = value; }
+
    void print() {
       const int COLUMNS = 6;
       const int ROWS = 5;
