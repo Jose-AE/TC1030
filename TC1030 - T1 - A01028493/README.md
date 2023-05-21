@@ -1,6 +1,6 @@
-# Snake Game en C++
+# Serpientes y Escaleras en C++
 
-Este es un simple juego de Snake implementado en C++. El juego utiliza conceptos de programación orientada a objetos y cuenta con una interfaz de consola.
+Este es un simple juego de Serpientes y Escaleras implementado en C++. El juego utiliza conceptos de programación orientada a objetos y cuenta con una interfaz de consola.
 
 ## Instrucciones de compilación
 
@@ -32,7 +32,7 @@ Una vez que hayas compilado el programa, puedes ejecutarlo siguiendo estos pasos
 
 ## Conceptos de programación orientada a objetos utilizados
 
-En este programa de Snake en C++, se utilizaron los siguientes conceptos de programación orientada a objetos:
+En este programa de Serpientes y Escaleras en C++, se utilizaron los siguientes conceptos de programación orientada a objetos:
 
 - Clases: Se definieron varias clases, como `Player`, `Board` y `Dice`, para representar diferentes entidades del juego y encapsular su comportamiento y propiedades.
 - Objetos: Se crearon instancias de las clases mencionadas anteriormente, como `GameDice`, `GameBoard` y `players`, para utilizar sus funcionalidades y mantener el estado del juego.
