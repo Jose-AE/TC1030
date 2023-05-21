@@ -48,6 +48,9 @@
     "xlocinfo": "cpp",
     "xloctime": "cpp",
     "xmemory": "cpp",
-    "xstddef": "cpp"
+    "xstddef": "cpp",
+    "locale": "cpp",
+    "thread": "cpp",
+    "xlocmes": "cpp"
   }
 }

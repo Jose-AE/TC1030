@@ -2,7 +2,6 @@
 #include <thread>
 #include "Classes/Board.h"
 #include "Classes/Dice.h"
-#include "Classes/Player.h"
 
 using namespace std;
 
@@ -20,7 +19,7 @@ class MyGame {
       Board GameBoard;
       Player players[2];
 
-      int turn = 44;
+      int turn = 0;
       bool firstTurn = true;
 
       while (true) {
@@ -55,6 +54,7 @@ class MyGame {
          }
          if (input == "C" || input == "c") {
             clearConsole();
+            int prevTile = GameBoard.getPlayerTile(turn % 2 == 0 ? 1 : 2);
             turn += 1;
             int roll = GameDice.roll();
             int tile = GameBoard.movePlayerBy(roll, turn % 2 == 0 ? 1 : 0);
@@ -62,17 +62,32 @@ class MyGame {
             clearConsole();
 
             if (tile == BOARD_SIZE - 1) {
-               cout << "-- GAME OVER --";
-               cout << (turn % 2 == 0 ? "P2 WINS!" : "P1 WINS!");
+               cout << "-- GAME OVER --" << endl;
+               cout << (turn % 2 == 0 ? "Player 2 is the winner!!!"
+                                      : "Player 1 is the winner!!!");
                break;
             }
+
+            cout << "Turn: " << turn << endl;
+            cout << "Player: " << (turn % 2 == 0 ? 2 : 1) << endl;
+            cout << "Was in tile: " << prevTile + 1 << endl;
+            cout << "Dice rolled: " << roll << endl;
+            cout << "Got to a tiile with: "
+                 << GameBoard.getTile(prevTile + roll) << endl;
+            cout << "Ended up in tile: " << tile + 1 << endl;
+
+            cout << "Turn abbreviation: " << turn << (turn % 2 == 0 ? 2 : 1)
+                 << prevTile + 1 << roll << GameBoard.getTile(prevTile + roll)
+                 << tile + 1 << endl;
 
          } else {
             clearConsole();
             break;
          }
       }
-      cout << "Thanks for playing!!!";
+      cout << "\nThanks for playing!!!";
+      string temp;
+      cin >> temp;
    }
 };
 

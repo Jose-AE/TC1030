@@ -70,7 +70,7 @@ class Dice {
          cout << " | *    *  |/" << endl;
          cout << " +---------+ " << endl;
       }
-
       return rng;
+      // return 5;
    }
 };

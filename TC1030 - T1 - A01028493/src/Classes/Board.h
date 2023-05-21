@@ -5,6 +5,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include "Player.h"
 
 #define BOARD_SIZE 30
 
@@ -13,11 +14,15 @@ using namespace std;
 class Board {
   private:
    string tiles[BOARD_SIZE];
-   int p1 = 0;
-   int p2 = 0;
+   Player p1;
+   Player p2;
 
   public:
    Board() {
+      // create players
+      p1.setId(1);
+      p2.setId(2);
+
       // generate random tiles
       fill_n(tiles, BOARD_SIZE, "N");
 
@@ -46,36 +51,43 @@ class Board {
             tiles[selectedTile] = "L";
          }
       }
-      // tiles[4] = "L";
+
+      // tiles[5] = "L";
    };
+
+   string getTile(int tile) { return tiles[tile]; }
+
+   int getPlayerTile(int player) {
+
+      return (player == 1 ? p1.getTile() : p2.getTile());
+   }
 
    int movePlayerBy(int tile, int playerId) {
 
       if (playerId == 0) {
-         if (p1 + tile > BOARD_SIZE - 1) {
-            p1 = BOARD_SIZE - 1;
-         } else if (tiles[p1 + tile] == "S") {
-            p1 += tile - 3;
-         } else if (tiles[p1 + tile] == "L") {
-            p1 += tile + 3;
+         if (p1.getTile() + tile > BOARD_SIZE - 1) {
+            p1.setTile(BOARD_SIZE - 1);
+         } else if (tiles[p1.getTile() + tile] == "S") {
+            movePlayerBy(tile - 3, 0);
+         } else if (tiles[p1.getTile() + tile] == "L") {
+            movePlayerBy(tile + 3, 0);
          } else {
-            p1 += tile;
+            p1.incrementTile(tile);
          }
-         return p1;
+         return p1.getTile();
       }
 
       if (playerId == 1) {
-         if (p2 + tile > BOARD_SIZE - 1) {
-            p2 = BOARD_SIZE - 1;
-            cout << "-------------------------";
-         } else if (tiles[p2 + tile] == "S") {
-            p2 += tile - 3;
-         } else if (tiles[p2 + tile] == "L") {
-            p2 += tile + 3;
+         if (p2.getTile() + tile > BOARD_SIZE - 1) {
+            p2.setTile(BOARD_SIZE - 1);
+         } else if (tiles[p2.getTile() + tile] == "S") {
+            movePlayerBy(tile - 3, 1);
+         } else if (tiles[p2.getTile() + tile] == "L") {
+            movePlayerBy(tile + 3, 1);
          } else {
-            p2 += tile;
+            p2.incrementTile(tile);
          }
-         return p2;
+         return p2.getTile();
       }
 
       return 0;
@@ -115,11 +127,11 @@ class Board {
 
             string players = "|";
 
-            if (tile == p1 && tile == p2) {
+            if (tile == p1.getTile() && tile == p2.getTile()) {
                players += "(P1 P2)";
-            } else if (tile == p1) {
+            } else if (tile == p1.getTile()) {
                players += "  (P1) ";
-            } else if (tile == p2) {
+            } else if (tile == p2.getTile()) {
                players += "  (P2) ";
             } else {
                players += "       ";
