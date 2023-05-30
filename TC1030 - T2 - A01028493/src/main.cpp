@@ -1,99 +1,126 @@
-#include <chrono>
-#include <thread>
-#include "Classes/Board.h"
-#include "Classes/Dice.h"
+#include <iostream>
+#include <string>
 
 using namespace std;
 
-class MyGame {
-
-   void clearConsole() {
-      for (int i = 0; i < 100; i++) {
-         cout << endl;
-      }
-   }
+class Envio {
+  protected:
+   string remitenteNombre;
+   string remitenteDireccion;
+   string remitenteCiudad;
+   string remitenteEstado;
+   string remitenteCodigoPostal;
+   string destinatarioNombre;
+   string destinatarioDireccion;
+   string destinatarioCiudad;
+   string destinatarioEstado;
+   string destinatarioCodigoPostal;
+   double costoEnvio;
 
   public:
-   void start() {
-      Dice GameDice;
-      Board GameBoard;
-      Player players[2];
+   Envio(const string& remitenteNombre, const string& remitenteDireccion,
+         const string& remitenteCiudad, const string& remitenteEstado,
+         const string& remitenteCodigoPostal, const string& destinatarioNombre,
+         const string& destinatarioDireccion, const string& destinatarioCiudad,
+         const string& destinatarioEstado,
+         const string& destinatarioCodigoPostal, double costoEnvio)
+       : remitenteNombre(remitenteNombre),
+         remitenteDireccion(remitenteDireccion),
+         remitenteCiudad(remitenteCiudad),
+         remitenteEstado(remitenteEstado),
+         remitenteCodigoPostal(remitenteCodigoPostal),
+         destinatarioNombre(destinatarioNombre),
+         destinatarioDireccion(destinatarioDireccion),
+         destinatarioCiudad(destinatarioCiudad),
+         destinatarioEstado(destinatarioEstado),
+         destinatarioCodigoPostal(destinatarioCodigoPostal),
+         costoEnvio(costoEnvio) {}
 
-      int turn = 0;
-      bool firstTurn = true;
+   virtual double calculaCosto() { return costoEnvio; }
+};
 
-      while (true) {
+class Paquete : public Envio {
+  private:
+   double largo;
+   double ancho;
+   double profundidad;
+   double peso;
+   double costoPorKg;
 
-         if (turn > 50) {
-            cout << "The maximum number of turns has been reached...";
-            break;
-         }
+  public:
+   Paquete(const string& remitenteNombre, const string& remitenteDireccion,
+           const string& remitenteCiudad, const string& remitenteEstado,
+           const string& remitenteCodigoPostal,
+           const string& destinatarioNombre,
+           const string& destinatarioDireccion,
+           const string& destinatarioCiudad, const string& destinatarioEstado,
+           const string& destinatarioCodigoPostal, double costoEnvio,
+           double largo, double ancho, double profundidad, double peso,
+           double costoPorKg)
+       : Envio(remitenteNombre, remitenteDireccion, remitenteCiudad,
+               remitenteEstado, remitenteCodigoPostal, destinatarioNombre,
+               destinatarioDireccion, destinatarioCiudad, destinatarioEstado,
+               destinatarioCodigoPostal, costoEnvio),
+         largo(largo),
+         ancho(ancho),
+         profundidad(profundidad),
+         peso(peso),
+         costoPorKg(costoPorKg) {}
 
-         GameBoard.print();
+   double calculaCosto() override {
+      double costo = Envio::calculaCosto();
+      costo += peso * costoPorKg;
+      return costo;
+   }
+};
 
-         string input;
-         while (true) {
+class Sobre : public Envio {
+  private:
+   double largo;
+   double ancho;
 
-            cout
-                << (firstTurn
-                        ? "Press C to continue next turn, or E to end the game:"
-                        : ((turn + 1) % 2 == 0 ? "P2 turn: " : "P1 turn: "));
+  public:
+   Sobre(const string& remitenteNombre, const string& remitenteDireccion,
+         const string& remitenteCiudad, const string& remitenteEstado,
+         const string& remitenteCodigoPostal, const string& destinatarioNombre,
+         const string& destinatarioDireccion, const string& destinatarioCiudad,
+         const string& destinatarioEstado,
+         const string& destinatarioCodigoPostal, double costoEnvio,
+         double largo, double ancho)
+       : Envio(remitenteNombre, remitenteDireccion, remitenteCiudad,
+               remitenteEstado, remitenteCodigoPostal, destinatarioNombre,
+               destinatarioDireccion, destinatarioCiudad, destinatarioEstado,
+               destinatarioCodigoPostal, costoEnvio),
+         largo(largo),
+         ancho(ancho) {}
 
-            cin >> input;
-
-            if (input != "c" && input != "C" && input != "e" && input != "E") {
-               cout << "Invalid option, please press C to continue next turn "
-                       "or E "
-                       "to end the game"
-                    << endl;
-               continue;
-            } else {
-               firstTurn = false;
-               break;
-            }
-         }
-         if (input == "C" || input == "c") {
-            clearConsole();
-            int prevTile = GameBoard.getPlayerTile(turn % 2 == 0 ? 1 : 2);
-            turn += 1;
-            int roll = GameDice.roll();
-            int tile = GameBoard.movePlayerBy(roll, turn % 2 == 0 ? 1 : 0);
-            this_thread::sleep_for(chrono::seconds(1));
-            clearConsole();
-
-            if (tile == BOARD_SIZE - 1) {
-               cout << "-- GAME OVER --" << endl;
-               cout << (turn % 2 == 0 ? "Player 2 is the winner!!!"
-                                      : "Player 1 is the winner!!!");
-               break;
-            }
-
-            cout << "Turn: " << turn << endl;
-            cout << "Player: " << (turn % 2 == 0 ? 2 : 1) << endl;
-            cout << "Was in tile: " << prevTile + 1 << endl;
-            cout << "Dice rolled: " << roll << endl;
-            cout << "Got to a tiile with: "
-                 << GameBoard.getTile(prevTile + roll) << endl;
-            cout << "Ended up in tile: " << tile + 1 << endl;
-
-            cout << "Turn abbreviation: " << turn << (turn % 2 == 0 ? 2 : 1)
-                 << prevTile + 1 << roll << GameBoard.getTile(prevTile + roll)
-                 << tile + 1 << endl;
-
-         } else {
-            clearConsole();
-            break;
-         }
+   double calculaCosto() override {
+      double costo = Envio::calculaCosto();
+      if (largo > 25 || ancho > 30) {
+         costo += 10;  // Cargos adicionales para dimensiones mayores
       }
-      cout << "\nThanks for playing!!!";
-      string temp;
-      cin >> temp;
+      return costo;
    }
 };
 
 int main() {
+   // Ejemplo de uso
+   Envio* envio1 =
+       new Paquete("Remitente 1", "Dirección 1", "Ciudad 1", "Estado 1", "CP 1",
+                   "Destinatario 1", "Dirección 2", "Ciudad 2", "Estado 2",
+                   "CP 2", 10.0, 20.0, 30.0, 10.0, 2.5, 0.5);
+   double costoEnvio1 = envio1->calculaCosto();
+   cout << "Costo de envío 1: $" << costoEnvio1 << endl;
 
-   MyGame Game;
-   Game.start();
+   Envio* envio2 =
+       new Sobre("Remitente 2", "Dirección 3", "Ciudad 3", "Estado 3", "CP 3",
+                 "Destinatario 2", "Dirección 4", "Ciudad 4", "Estado 4",
+                 "CP 4", 5.0, 30.0, 40.0);
+   double costoEnvio2 = envio2->calculaCosto();
+   cout << "Costo de envío 2: $" << costoEnvio2 << endl;
+
+   delete envio1;
+   delete envio2;
+
    return 0;
 }

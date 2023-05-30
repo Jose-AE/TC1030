@@ -1,11 +1,18 @@
+#include <string>
+
+using namespace std;
+
 class Envio {
-  private:
-   /* data */
+  protected:
+   string name;
+   string adress;
+   string city;
+   string state;
+   string zip;
+   string recipient;
+   string destiny;
+   float cost = 60;
+
   public:
-   Envio(/* args */);
-   ~Envio();
+   virtual double calculaCosto(return cost) {}
 };
-
-Envio::Envio(/* args */) {}
-
-Envio::~Envio() {}
