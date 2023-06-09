@@ -21,7 +21,7 @@ class enemy : public entity {
    int getNum() override {}
 };
 
-int main() {
+int mains() {
    User user("JohnDoe", "pa$$w0rd");
    user.displayUserDetails();
 
