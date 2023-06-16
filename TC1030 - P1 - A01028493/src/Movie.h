@@ -4,6 +4,7 @@
 class Movie : public Video {
   public:
    Movie(const int& id, const string& name, const string& genre,
-         const float& duration, const int& rating)
-       : Video(id, name, genre, duration, rating) {}
+         const float& duration);
+
+   bool isMovie() const override;
 };

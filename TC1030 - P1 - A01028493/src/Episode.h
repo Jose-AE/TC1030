@@ -1,19 +1,18 @@
 #pragma once
-#include <string>
-
+#include <vector>
+#include "Episode.h"
+#include "Video.h"
 using namespace std;
 
-class Episode {
+class Episode : public Video {
   private:
-   int rating = 0;
-   string name;
-   float duration;
+   string epName;
 
   public:
-   Episode(const string& name, const float& duration, const int& rating)
-       : name(name), duration(duration), rating(rating) {}
+   Episode(const int& id, const string& name, const string& genre,
+           const float& duration, const string& epName);
 
-   string getName() { return name; }
-   int getRating() { return rating; }
-   int getDuration() { return duration; }
+   bool isMovie() const override;
+
+   string getEpName() const;
 };
