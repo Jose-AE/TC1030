@@ -18,5 +18,5 @@ int Video::getId() const { return id; }
 
 void Video::operator++() {
    votes += 1;
-   rating += 5 / votes;
+   rating = ((votes - 1) * rating + 5) / votes;
 }
