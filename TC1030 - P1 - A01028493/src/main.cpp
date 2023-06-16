@@ -50,8 +50,7 @@ void printSelectVideo() {
          cin >> score;
          try {
             if (stof(score) > 0 && stof(score) <= 5) {
-               videos[stoi(index)]->addRating(stof(score));
-
+               videos[stoi(index) - 1]->addRating(stof(score));
                break;
             } else {
                throw "Invalid rating";
@@ -61,6 +60,7 @@ void printSelectVideo() {
             cout << "Invalid rating\n";
          }
       }
+
       cout << "Rated the video successfully!\n\n\n";
       system("pause");
       return;
@@ -200,7 +200,7 @@ int main() {
 
    // generate and populate vector
    string line, word;
-   fstream file("test.csv", ios::in);
+   fstream file("data.csv", ios::in);
    if (file.is_open()) {
 
       try {
@@ -239,7 +239,7 @@ int main() {
       }
 
    } else {
-      cout << "Could not open the file\n";
+      cout << "Could not open the file, path is possibly incorrect\n";
    }
 
    return 0;

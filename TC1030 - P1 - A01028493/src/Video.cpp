@@ -11,7 +11,7 @@ float Video::getRating() const { return rating; }
 
 void Video::addRating(const float& rate) {
    votes += 1;
-   rating += rate / votes;
+   rating = ((votes - 1) * rating + rate) / votes;
 }
 
 int Video::getId() const { return id; }
