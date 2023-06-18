@@ -15,6 +15,3 @@ La aplicación debe mostrar el siguiente menu ciclado:
    pedir valor otorgado
 6. Salir
    El sistema debe validar todas las entradas dadas por el usuario.
-
-1)show all by Gender
-2)Show all by duration 3) show everythuing 4)
