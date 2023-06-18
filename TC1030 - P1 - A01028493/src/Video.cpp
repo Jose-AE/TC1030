@@ -1,8 +1,8 @@
 #include "Video.h"
 
-Video::Video::Video(const int& id, const string& name, const string& genre,
-                    const float& duration)
-    : id(id), name(name), genre(genre), duration(duration), rating(rating) {}
+Video::Video(const int& id, const string& name, const string& genre,
+             const float& duration)
+    : id(id), name(name), genre(genre), duration(duration) {}
 
 string Video::getName() const { return name; }
 string Video::getGenre() const { return genre; }
